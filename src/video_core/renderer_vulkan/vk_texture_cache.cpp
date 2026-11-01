@@ -2603,11 +2603,6 @@ bool Image::InitSparseLayers() {
     const u32 block_height = huge_astc ? 1 : VideoCore::Surface::DefaultBlockHeight(info.format);
     const u64 block_bytes = huge_astc ? 4 : VideoCore::Surface::BytesPerBlock(info.format);
     const VkExtent3D granularity = it->formatProperties.imageGranularity;
-    // Some drivers (AMD) report a zero sparse granularity for some formats; dividing by it below
-    // crashed (integer divide by zero). Fall back to the non-sparse path instead.
-    if (granularity.width == 0 || granularity.height == 0) {
-        return false;
-    }
     s.tile_width = granularity.width;
     s.tile_height = granularity.height;
     const u64 tile = s.requirements.alignment;
